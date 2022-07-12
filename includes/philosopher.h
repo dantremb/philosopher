@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/11 11:04:13 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/12 12:19:31 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ typedef struct s_room
 	int	time_to_sleep;
 	int	meal_count;
 	int	*fork;
+	int	add;
+	pthread_mutex_t	mutex;
+	pthread_t	*th;
 
 }				t_room;
 #endif

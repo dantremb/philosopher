@@ -6,7 +6,7 @@
 #    By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 23:33:38 by root              #+#    #+#              #
-#    Updated: 2022/06/27 23:55:14 by dantremb         ###   ########.fr        #
+#    Updated: 2022/07/12 11:33:12 by dantremb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,9 +78,4 @@ W = $(shell tput -Txterm setaf 7)
 signature:
 	@echo "\n$G+---+---+---+---+---+---+---+---+"
 	@echo "$G|$C	$(NAME) by Dantremb	$G|"
-	@echo "$G+---+---+---+---+---+---+---+---+"
-
-signature_bonus:
-	@echo "\n$G+---+---+---+---+---+---+---+---+"
-	@echo "$G|$C	$(NAME_BONUS) by Dantremb	$G|"
 	@echo "$G+---+---+---+---+---+---+---+---+"
