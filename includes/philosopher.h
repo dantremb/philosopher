@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/12 12:19:31 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/12 14:22:44 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,10 @@ typedef struct s_room
 	pthread_t	*th;
 
 }				t_room;
+
+typedef struct s_philo
+{
+	
+}				t_philo;
+
 #endif
