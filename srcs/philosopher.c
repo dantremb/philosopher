@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/12 21:52:12 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/13 14:41:08 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,32 @@ void	ft_error(char *error)
 	exit(1);
 }
 
-t_philo	*ft_init_room(t_room *r, int argc, char **argv)
+int	ft_init_room(t_table *table, int argc, char **argv)
 {
-	t_philo	*p;
 	int		i;
 	(void) argc;
 	
-	r->philo_count = ft_atoi(argv[1]);
-	r->add = 0;
+	table->philo_count = ft_atoi(argv[1]);
+	
 	printf("Malloc philo struct\n");
-	p = malloc(sizeof(t_philo) * (ft_atoi(argv[1]) + 1));
-	if (!p)
+	table->philo = ft_calloc(sizeof(t_philo), table->philo_count);
+	if (!table->philo)
 		return (NULL);
 	i = -1;
-	while(++i <= r->philo_count)
+	while(++i <= table->philo_count)
 	{
-		p[i].r = r;
-		printf("init room = %p pointer = %p\n", r, p[i].r);
-		p[i].philo = i;
-		printf("init i = %d philo = %d\n", i, p[i].philo);
+		table->philo[i].r = table;
+		printf("init room = %p pointer = %p\n", table, p[i].r);
+		table->philo[i].philo = i;
+		printf("init i = %d philo = %d\n", i, philo[i].philo);
 	}
 	return (p);
 }
 
+/*
 void	*routine(void *arg)
 {
-	t_room	*r;
+	t_philo	*r;
 
 	r = arg;
 	int	i = 0;
@@ -60,29 +60,28 @@ void	*routine(void *arg)
 	printf("Ending thread with add = %d\n", r->add);
 	return(NULL);
 }
-
-int	main(int argc, char **argv)
+int	ft_sit_at_table(t_philo	**p)
 {
-	t_philo	*p;
-	t_room	r;
-	
-	pthread_mutex_init(&r.mutex, NULL);
-	if (argc == 5 || argc == 6)
-	{
-		p = ft_init_room(&r, argc, argv);
-		ft_create_thread()
-		p->r->time_to_die = 1;
-		/*if (pthread_create(&t1, NULL,&routine, &r) != 0)
+	if (pthread_create(r.t1, NULL,&routine, &r) != 0)
 			return (1);
 		usleep(1);
-		if (pthread_create(&t2, NULL,&routine, &r) != 0)
+		if (pthread_create(r.t2, NULL,&routine, &r) != 0)
 			return (2);	
-		if (pthread_join(t1,NULL) != 0)
+		if (pthread_join(*r.t1,NULL) != 0)
 			return (3);
-		if (pthread_join(t2,NULL) != 0)
-			return (4);*/
+		if (pthread_join(*r.t2,NULL) != 0)
+			return (4);
 		pthread_mutex_destroy(&r.mutex);
+}
+*/
+int	main(int argc, char **argv)
+{
+	t_table	table;
+	
+	if (argc == 5 || argc == 6)
+	{
+		ft_init_room(&table, argc, argv);
 	}
 	else
-		ft_error("Empty arguments");
+		ft_error("Bad arguments");
 }
