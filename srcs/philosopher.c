@@ -6,13 +6,11 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/12 12:31:11 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/12 21:52:12 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
-#include <unistd.h>
-
 
 void	ft_error(char *error)
 {
@@ -20,21 +18,27 @@ void	ft_error(char *error)
 	exit(1);
 }
 
-void	ft_init_room(t_room *r, int argc, char **argv)
+t_philo	*ft_init_room(t_room *r, int argc, char **argv)
 {
+	t_philo	*p;
+	int		i;
+	(void) argc;
+	
 	r->philo_count = ft_atoi(argv[1]);
-	r->time_to_die = ft_atoi(argv[2]) * 1000;
-	r->time_to_eat = ft_atoi(argv[3]) * 1000;
-	r->time_to_sleep = ft_atoi(argv[4]) * 1000;
-	if (argv[5] != NULL)
-		r->meal_count = ft_atoi(argv[5]);
-	ft_printf("argc = %d\n", argc);
-	ft_printf("philo_count = %d\n", r->philo_count);
-	ft_printf("time_to_die = %d\n", r->time_to_die);
-	ft_printf("time_to_eat = %d\n", r->time_to_eat);
-	ft_printf("time_to_sleep = %d\n", r->time_to_sleep);
-	if (argc == 6)
-		ft_printf("meal_count = %d\n", r->meal_count);
+	r->add = 0;
+	printf("Malloc philo struct\n");
+	p = malloc(sizeof(t_philo) * (ft_atoi(argv[1]) + 1));
+	if (!p)
+		return (NULL);
+	i = -1;
+	while(++i <= r->philo_count)
+	{
+		p[i].r = r;
+		printf("init room = %p pointer = %p\n", r, p[i].r);
+		p[i].philo = i;
+		printf("init i = %d philo = %d\n", i, p[i].philo);
+	}
+	return (p);
 }
 
 void	*routine(void *arg)
@@ -59,17 +63,16 @@ void	*routine(void *arg)
 
 int	main(int argc, char **argv)
 {
-	t_room		r;
-	pthread_t	t1;
-	pthread_t	t2;
+	t_philo	*p;
+	t_room	r;
 	
-	r.add = 0;
 	pthread_mutex_init(&r.mutex, NULL);
 	if (argc == 5 || argc == 6)
 	{
-		ft_init_room(&r, argc, argv);
-
-		if (pthread_create(&t1, NULL,&routine, &r) != 0)
+		p = ft_init_room(&r, argc, argv);
+		ft_create_thread()
+		p->r->time_to_die = 1;
+		/*if (pthread_create(&t1, NULL,&routine, &r) != 0)
 			return (1);
 		usleep(1);
 		if (pthread_create(&t2, NULL,&routine, &r) != 0)
@@ -77,7 +80,7 @@ int	main(int argc, char **argv)
 		if (pthread_join(t1,NULL) != 0)
 			return (3);
 		if (pthread_join(t2,NULL) != 0)
-			return (4);
+			return (4);*/
 		pthread_mutex_destroy(&r.mutex);
 	}
 	else

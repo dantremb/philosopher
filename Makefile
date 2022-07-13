@@ -6,7 +6,7 @@
 #    By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 23:33:38 by root              #+#    #+#              #
-#    Updated: 2022/07/12 11:33:12 by dantremb         ###   ########.fr        #
+#    Updated: 2022/07/12 20:06:19 by dantremb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ AR = ar
 CC = gcc
 ARFLAGS = rcs
 CFLAGS = -Wall -Wextra -Werror -g
+LDFLAGS = -pthread  -lpthread
 
 # Includes
 LIBFT = includes/libft/libft.a
@@ -48,7 +49,7 @@ init:
 
 # Creating executable
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) -o $@ $^ $(LIBFT)
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBFT)
 
 # Cleaning
 REMOVE = rm -rf
