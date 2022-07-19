@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/19 12:19:46 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/19 14:54:17 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ typedef struct s_table
 	int				time_to_sleep;
 	int				meal_count;
 	pthread_mutex_t	*fork;
-	pthread_t		*th;
+	pthread_t		*threads;
 }				t_table;
 
 typedef struct s_philo
 {
 	t_table *table;
 	int		name;
+	int		nb_meal;
 }				t_philo;
 #endif
