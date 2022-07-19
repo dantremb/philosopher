@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/19 11:32:25 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/19 12:19:46 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_table
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meal_count;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	*fork;
 	pthread_t		*th;
 }				t_table;
 

@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/19 11:39:40 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/19 13:26:45 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,24 @@ void	ft_error(char *error)
 	exit(1);
 }
 
+t_philo	*ft_init_philo(t_table *table)
+{
+	int	i;
+	t_philo	*philo;
+	
+	
+	printf("Init philo\n");
+	philo = ft_calloc(sizeof(t_philo), table->philo_count + 1);
+	i = -1;
+	while(++i < table->philo_count)
+	{
+		philo[i].name = i;
+		philo[i].table = table;
+		printf("init i = %d philo = %d\n", i, philo[i].name);
+	}
+	return (philo);
+}
+
 t_philo	*ft_init_room(t_table *table, int argc, char **argv)
 {
 	int		i;
@@ -27,17 +45,10 @@ t_philo	*ft_init_room(t_table *table, int argc, char **argv)
 	table->philo_count = ft_atoi(argv[1]);
 	
 	printf("Malloc philo struct\n");
-	philo = ft_calloc(sizeof(t_philo), table->philo_count + 1);
+	
 	table->th = ft_calloc(sizeof(t_philo), table->philo_count + 1);
 
-	printf("Init philo\n");
-	i = -1;
-	while(++i < table->philo_count)
-	{
-		philo[i].name = i;
-		philo[i].table = table;
-		printf("init i = %d philo = %d\n", i, philo[i].name);
-	}
+	
 	return (philo);
 }
 
