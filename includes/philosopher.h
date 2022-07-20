@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/19 23:03:02 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/20 14:42:24 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft/includes/libft.h"
 # include <stdio.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 
 typedef struct s_table
@@ -25,7 +26,7 @@ typedef struct s_table
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meal_count;
-	pthread_t		*threads;
+	int				time;
 }				t_table;
 
 typedef struct s_philo
@@ -33,6 +34,7 @@ typedef struct s_philo
 	t_table 		*table;
 	int				name;
 	int				nb_meal;
+	int				last_meal;
 	pthread_mutex_t	*fork;
 }				t_philo;
 #endif

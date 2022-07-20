@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/19 23:33:24 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/20 17:59:11 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,41 @@ void	ft_error(char *error)
 	exit(1);
 }
 
+int	ft_get_time(void)
+{
+	struct timeval	time;
+	int	i = 60;
+	while(i-- > 0)
+	{
+		gettimeofday(&time, NULL);
+		printf("time.tv_sec = %lu\n", time.tv_sec);
+		printf("time.tv_usec = %lu\n", time.tv_usec);
+		//printf("time = %lu\n", ((time.tv_sec * 1000) + (time.tv_usec / 1000)));
+		usleep(990);
+	}
+	return (1);
+}
+
+/*
+pthread_mutex_t	*ft_init_fork(t_philo *philo, t_table *table)
+{
+	pthread_mutex_t	*fork;
+	int				i;
+
+	i = -1;
+	fork = malloc(sizeof(pthread_mutex_t) * table->philo_count);
+	while (++i < table->philo_count)
+		if (pthread_mutex_init(&fork[i], NULL) != 0)
+			return (1);
+}
+*/
 t_philo	*ft_init_philo(t_table *table)
 {
-	int	i;
-	t_philo	*philo;
+	t_philo			*philo;
+	//pthread_mutex_t	*fork;
+	int				i;
 	
-	printf("Init philo\n");
+	//fork = ft_init_fork(philo, table);
 	philo = ft_calloc(sizeof(t_philo), table->philo_count + 1);
 	i = -1;
 	while(++i < table->philo_count)
@@ -31,20 +60,17 @@ t_philo	*ft_init_philo(t_table *table)
 		philo[i].name = i + 1;
 		philo[i].table = table;
 		philo[i].nb_meal = table->meal_count;
-		printf("init i = %d philo = %d meal count = %d\n", i, philo[i].name, philo[i].nb_meal);
+		philo[i].last_meal = 0;
 	}
-	//ft_init_fork(philo);
 	return (philo);
 }
 
 t_philo	*ft_init_table(t_table *table, int argc, char **argv)
 {
-	(void) argc;
-	printf("ft_init_room\n");
 	table->philo_count = ft_atoi(argv[1]);
-	table->time_to_die = ft_atoi(argv[2]);
-	table->time_to_eat = ft_atoi(argv[3]);
-	table->time_to_sleep = ft_atoi(argv[4]);
+	table->time_to_die = ft_atoi(argv[2]) * 1000;
+	table->time_to_eat = ft_atoi(argv[3]) * 1000;
+	table->time_to_sleep = ft_atoi(argv[4]) * 1000;
 	if (argc == 6)
 		table->meal_count = ft_atoi(argv[5]);
 	return (ft_init_philo(table));
@@ -53,15 +79,13 @@ t_philo	*ft_init_table(t_table *table, int argc, char **argv)
 void	*routine(void *arg)
 {
 	t_philo	*philo;
-	int	i = 0;
 
 	philo = arg;
-	printf("Hi! im philo number %d\n", philo->name);
-	while (++i <= 10)
-	{
-		printf("%d sec\n", i);
-		usleep(1000000);
-	}
+	if (philo->name % 2 != 0)
+		usleep(10000);
+	//philo->last_meal = ft_get_time();
+	printf("Hi! im philo number %d taking fork 1\n", philo->name);
+	printf("Hi! im philo number %d taking fork 2\n", philo->name);
 	return(NULL);
 }
 
@@ -71,26 +95,27 @@ int	ft_sit_at_table(t_table *table, t_philo *philo)
 	int			i;
 	
 	i = -1;
-	chair = ft_calloc(sizeof(pthread_t) * table->philo_count);
+	chair = ft_calloc(sizeof(pthread_t), table->philo_count);
 	while (++i < table->philo_count)
 		if (pthread_create(&chair[i], NULL,&routine, &philo[i]) != 0)
 			return (1);	
 	i = -1;
 	while (++i < table->philo_count)
-		if (pthread_join(&chair[i],NULL) != 0)
+		if (pthread_join(chair[i],NULL) != 0)
 			return (1);
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_table	t;
+	t_table	table;
 	t_philo	*philo;
 	
 	if (argc < 5 || argc > 6)
 		ft_error("Bad arguments");
-	philo = ft_init_table(&t, argc, argv);
-	ft_sit_at_table(&t, philo);
+	philo = ft_init_table(&table, argc, argv);
+	ft_sit_at_table(&table, philo);
+	ft_get_time();
 	return (0);
 }
 
