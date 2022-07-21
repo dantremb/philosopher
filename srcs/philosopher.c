@@ -6,17 +6,11 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/21 11:23:42 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/21 15:12:31 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
-
-void	ft_error(char *error)
-{
-	perror(error);
-	exit(0);
-}
 
 long unsigned	ft_get_time(void)
 {
@@ -53,6 +47,11 @@ t_philo	*ft_init_philo(t_table *table)
 	
 	fork = ft_init_fork(table);
 	philo = ft_calloc(sizeof(t_philo), table->philo_count + 1);
+	if (!philo)
+	{
+		free (fork);
+		return (NULL);
+	}
 	i = -1;
 	while(++i < table->philo_count)
 	{
@@ -121,7 +120,7 @@ void	*ft_eating(void *arg)
 	return(NULL);
 }
 
-void	ft_death_watcher(t_table *table, t_philo *philo)
+int	ft_death_watcher(t_table *table, t_philo *philo)
 {
 	int	i;
 
@@ -130,32 +129,63 @@ void	ft_death_watcher(t_table *table, t_philo *philo)
 	while (1)
 	{
 		if (table->finished == table->philo_count)
-			exit(0);
+			return(1);
 		if (ft_get_time() - philo[i].last_meal > (unsigned long)table->time_to_die)
 		{
 			printf("%lums %d is dead\n",ft_get_ms(&philo[i]), philo[i].name);
-			exit(1);
+			return(1);
 		}
 		i = (i + 1) % table->philo_count;
-		usleep(5000);
+		usleep(1000);
 	}
 }
 
 int	ft_sit_at_table(t_table *table, t_philo *philo)
 {
-	pthread_t	*chair;
 	int			i;
 	
 	i = -1;
-	chair = ft_calloc(sizeof(pthread_t), table->philo_count);
+	table->chair = ft_calloc(sizeof(pthread_t), table->philo_count);
+	if (!table->chair)
+		return (1);
 	while (++i < table->philo_count)
-		if (pthread_create(&chair[i], NULL,&ft_eating, &philo[i]) != 0)
+		if (pthread_create(&table->chair[i], NULL,&ft_eating, &philo[i]) != 0)
 			return (1);	
-	ft_death_watcher(table, philo);
+	if (ft_death_watcher(table, philo) == 1)
+		return (1);
 	i = -1;
 	while (++i < table->philo_count)
-		if (pthread_join(chair[i],NULL) != 0)
+		if (pthread_join(table->chair[i],NULL) != 0)
 			return (1);
+	return (0);
+}
+
+int	ft_check_argv(char **argv)
+{
+	int	ip;
+	int	is;
+
+	ip = 0;
+	is = 0;
+	while (argv[++ip])
+	{
+		is = -1;
+		while (argv[ip][++is])
+		{
+			if (argv[ip][is] == '-')
+				is++;
+			if (!ft_isdigit(argv[ip][is]))
+			{
+				printf("Arguments need to be numbers\n");
+				return (1);
+			}
+		}
+		if (ft_atoi(argv[ip]) < 1)
+		{
+			printf("Arguments need to greater than 0\n");
+			return (1);
+		}
+	}
 	return (0);
 }
 
@@ -163,10 +193,22 @@ int	main(int argc, char **argv)
 {
 	t_table	table;
 	t_philo	*philo;
-	
+
 	if (argc < 5 || argc > 6)
-		ft_error("Argument needed : nb_of_philo time_to_die time_to_eat time_to_sleep [nb of meals]");
+	{
+		printf("[philo][die][eat][sleep][meal]\n");
+		return (1);
+	}
+	if (ft_check_argv(argv) == 1)
+		return (1);
 	philo = ft_init_table(&table, argc, argv);
+	if (!philo)
+		
+		return(1);
 	ft_sit_at_table(&table, philo);
+	if (table.chair)
+		free (table.chair);
+	free(philo->fork);
+	free(philo);
 	return (0);
 }

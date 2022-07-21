@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/20 19:43:23 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/21 15:10:22 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_table
 	int				meal_count;
 	int				finished;
 	long unsigned	time;
+	pthread_t		*chair;
 }				t_table;
 
 typedef struct s_philo
