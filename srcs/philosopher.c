@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/20 19:06:03 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/20 20:08:17 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_philo	*ft_init_table(t_table *table, int argc, char **argv)
 	else
 		table->meal_count = -1;
 	table->time = ft_get_time();
+	table->finished = 0;
 	return (ft_init_philo(table));
 }
 
@@ -87,11 +88,15 @@ void	*ft_eating(void *arg)
 	philo->last_meal = ft_get_time();
 	while (1)
 	{
-		printf("%lums Philosopher(%d) eating!\n",ft_get_ms(philo), philo->name);
+		printf("%lums %d has taken a fork\n",ft_get_ms(philo), philo->name);
+		printf("%lums %d is eating!\n",ft_get_ms(philo), philo->name);
 		usleep(philo->table->time_to_eat * 1000);
-		printf("%lums Philosopher(%d) finished eating and now sleeping!\n",ft_get_ms(philo), philo->name);
-		usleep(philo->table->time_to_sleep * 1000);
 		philo->eated_meal += 1;
+		if (philo->eated_meal == philo->table->meal_count)
+			philo->table->finished++;
+		printf("%lums %d is sleeping\n",ft_get_ms(philo), philo->name);
+		usleep(philo->table->time_to_sleep * 1000);
+		printf("%lums %d is thinking\n",ft_get_ms(philo), philo->name);
 	}
 	return(NULL);
 }
@@ -101,9 +106,9 @@ void	ft_death_watcher(t_table *table, t_philo *philo)
 	(void)philo;
 	while (1)
 	{
-		if (table->meal_count == 0)
+		if (table->finished == table->philo_count)
 			exit(0);
-		usleep(50);
+		usleep(1000);
 	}
 }
 
@@ -131,7 +136,7 @@ int	main(int argc, char **argv)
 	t_philo	*philo;
 	
 	if (argc < 5 || argc > 6)
-		ft_error("Argument needed : [philo_count] [time_to_die] [time_to_eat] [time_to_sleep] [nb_meal]");
+		ft_error("Argument needed : nb_of_philo time_to_die time_to_eat time_to_sleep [nb of meals]");
 	philo = ft_init_table(&table, argc, argv);
 	ft_sit_at_table(&table, philo);
 	return (0);
