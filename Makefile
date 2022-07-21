@@ -6,7 +6,7 @@
 #    By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 23:33:38 by root              #+#    #+#              #
-#    Updated: 2022/07/12 20:06:19 by dantremb         ###   ########.fr        #
+#    Updated: 2022/07/21 15:49:02 by dantremb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,13 +20,9 @@ ARFLAGS = rcs
 CFLAGS = -Wall -Wextra -Werror -g
 LDFLAGS = -pthread  -lpthread
 
-# Includes
-LIBFT = includes/libft/libft.a
-LIBFT_PATH = includes/libft/
-
 # Sources files
 S = srcs/
-SRCS_FILES = philosopher.c
+SRCS_FILES = philosopher.c routine.c utils.c
 SRCS = $(addprefix $S, $(SRCS_FILES))
 
 # Objects conversion
@@ -43,8 +39,6 @@ all: signature init $(NAME)
 # Initialise librairies and making objs folder
 init:
 	@mkdir -p $O
-	@echo "$GLibrary's initialization$W"
-	@$(MAKE) -s -C $(LIBFT_PATH)
 	@printf "$CCreating $(NAME)\n$W"
 
 # Creating executable
@@ -56,11 +50,9 @@ REMOVE = rm -rf
 
 clean:
 	@$(REMOVE) $O
-	@$(MAKE) -s clean -C $(LIBFT_PATH)
 
 fclean: clean
 	@$(REMOVE) $(NAME)
-	@$(MAKE) -s fclean -C $(LIBFT_PATH)
 
 re:	fclean all
 

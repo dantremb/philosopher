@@ -6,18 +6,18 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/21 15:10:22 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/21 15:53:40 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
-# include "libft/includes/libft.h"
 # include <stdio.h>
 # include <pthread.h>
 # include <sys/time.h>
-
+# include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_table
 {
@@ -40,3 +40,8 @@ typedef struct s_philo
 	pthread_mutex_t	*fork;
 }				t_philo;
 #endif
+
+int				ft_sit_at_table(t_table *table, t_philo *philo);
+long unsigned	ft_get_time(void);
+unsigned long	ft_get_ms(t_philo *philo);
+int				ft_atoi(const char *str);
