@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/21 15:53:40 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/21 20:48:13 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,16 @@ typedef struct s_table
 
 typedef struct s_philo
 {
-	t_table 		*table;
+	t_table			*table;
 	int				name;
 	int				eated_meal;
 	long unsigned	last_meal;
 	pthread_mutex_t	*fork;
 }				t_philo;
-#endif
 
 int				ft_sit_at_table(t_table *table, t_philo *philo);
 long unsigned	ft_get_time(void);
 unsigned long	ft_get_ms(t_philo *philo);
 int				ft_atoi(const char *str);
+
+#endif

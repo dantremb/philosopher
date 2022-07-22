@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/21 15:45:57 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/21 20:39:51 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ pthread_mutex_t	*ft_init_fork(t_table *table)
 	if (!fork)
 		return (NULL);
 	while (++i < table->philo_count)
+	{
 		if (pthread_mutex_init(&fork[i], NULL) != 0)
 		{
 			free (fork);
 			return (NULL);
 		}
+	}
 	return (fork);
 }
 
@@ -35,7 +37,7 @@ t_philo	*ft_init_philo(t_table *table)
 	t_philo			*philo;
 	pthread_mutex_t	*fork;
 	int				i;
-	
+
 	fork = ft_init_fork(table);
 	if (!fork)
 		return (NULL);
@@ -46,7 +48,7 @@ t_philo	*ft_init_philo(t_table *table)
 		return (NULL);
 	}
 	i = -1;
-	while(++i < table->philo_count)
+	while (++i < table->philo_count)
 	{
 		philo[i].name = i + 1;
 		philo[i].table = table;
@@ -72,7 +74,6 @@ t_philo	*ft_init_table(t_table *table, int argc, char **argv)
 	return (ft_init_philo(table));
 }
 
-
 int	ft_check_argv(char **argv)
 {
 	int	ip;
@@ -87,7 +88,7 @@ int	ft_check_argv(char **argv)
 		{
 			if (argv[ip][is] == '-')
 				is++;
-			if (argv[ip][is] >= '0' && argv[ip][is] <= '9')
+			if (argv[ip][is] < '0' || argv[ip][is] > '9')
 			{
 				printf("Arguments need to be numbers\n");
 				return (1);
@@ -116,7 +117,7 @@ int	main(int argc, char **argv)
 		return (1);
 	philo = ft_init_table(&table, argc, argv);
 	if (!philo)
-		return(1);
+		return (1);
 	ft_sit_at_table(&table, philo);
 	if (table.chair)
 		free (table.chair);
