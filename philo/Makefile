@@ -6,12 +6,12 @@
 #    By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 23:33:38 by root              #+#    #+#              #
-#    Updated: 2022/07/21 15:49:02 by dantremb         ###   ########.fr        #
+#    Updated: 2022/07/27 22:47:32 by dantremb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Nom du Projet
-NAME = philosopher
+NAME = philo
 
 # Flags
 AR = ar
@@ -22,7 +22,7 @@ LDFLAGS = -pthread  -lpthread
 
 # Sources files
 S = srcs/
-SRCS_FILES = philosopher.c routine.c utils.c
+SRCS_FILES = philo.c routine.c utils.c
 SRCS = $(addprefix $S, $(SRCS_FILES))
 
 # Objects conversion
