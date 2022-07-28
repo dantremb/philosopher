@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:37:20 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/27 22:33:32 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/27 22:56:40 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void    ft_sleep(long int sleep)
         delay = ft_get_time() - time;
         if (delay >= sleep)
             break ;
-        usleep(500);
+        usleep(50);
     }
 }
 

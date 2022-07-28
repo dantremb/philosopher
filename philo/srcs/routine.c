@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:35:51 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/27 22:33:46 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/27 23:16:51 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*ft_eating(void *arg)
 
 	philo = arg;
 	if (philo->name % 2 == 0)
-		usleep(100);
+		ft_sleep(5);
 	philo->last_meal = ft_get_time();
 	while (1)
 	{
@@ -57,7 +57,7 @@ int	ft_death_watcher(t_table *table, t_philo *philo)
 	int	i;
 
 	i = 0;
-	usleep(200);
+	ft_sleep(8);
 	while (1)
 	{
 		if (table->finished == table->philo_count)
@@ -69,7 +69,7 @@ int	ft_death_watcher(t_table *table, t_philo *philo)
 			return (1);
 		}
 		i = (i + 1) % table->philo_count;
-		usleep(50);
+		ft_sleep(1);
 	}
 }
 
