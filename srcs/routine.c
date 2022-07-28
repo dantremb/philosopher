@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:35:51 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/21 20:44:52 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/07/27 22:33:46 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*ft_eating(void *arg)
 
 	philo = arg;
 	if (philo->name % 2 == 0)
-		usleep(200);
+		usleep(100);
 	philo->last_meal = ft_get_time();
 	while (1)
 	{
@@ -38,14 +38,14 @@ void	*ft_eating(void *arg)
 		ft_take_a_fork(philo, philo->name % philo->table->philo_count);
 		philo->last_meal = ft_get_time();
 		printf("%lums %d is eating!\n", ft_get_ms(philo), philo->name);
-		usleep(philo->table->time_to_eat * 1000);
+		ft_sleep(philo->table->time_to_eat);
 		ft_drop_fork(philo, philo->name - 1,
 			philo->name % philo->table->philo_count);
 		printf("%lums %d is sleeping\n", ft_get_ms(philo), philo->name);
 		philo->eated_meal += 1;
 		if (philo->eated_meal == philo->table->meal_count)
 			break ;
-		usleep(philo->table->time_to_sleep * 1000);
+		ft_sleep(philo->table->time_to_sleep);
 		printf("%lums %d is thinking\n", ft_get_ms(philo), philo->name);
 	}
 	philo->table->finished++;
@@ -63,13 +63,13 @@ int	ft_death_watcher(t_table *table, t_philo *philo)
 		if (table->finished == table->philo_count)
 			return (1);
 		if (ft_get_time() - philo[i].last_meal
-			> (unsigned long)table->time_to_die)
+			> (long int)table->time_to_die)
 		{
 			printf("%lums %d is dead\n", ft_get_ms(&philo[i]), philo[i].name);
 			return (1);
 		}
 		i = (i + 1) % table->philo_count;
-		usleep(1000);
+		usleep(50);
 	}
 }
 
