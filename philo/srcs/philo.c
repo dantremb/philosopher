@@ -96,7 +96,7 @@ int	ft_check_argv(char **argv)
 		}
 		if (ft_atoi(argv[ip]) < 1)
 		{
-			printf("Arguments need to greater than 0\n");
+			printf("Arguments need to be positive\n");
 			return (1);
 		}
 	}

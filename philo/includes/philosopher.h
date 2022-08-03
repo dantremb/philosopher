@@ -43,7 +43,7 @@ typedef struct s_philo
 int				ft_sit_at_table(t_table *table, t_philo *philo);
 long int		ft_get_time(void);
 long int		ft_get_ms(t_philo *philo);
-void			ft_sleep(long int sleep);
+void			ft_sleep(long int time_to_stop);
 int				ft_atoi(const char *str);
 
 #endif

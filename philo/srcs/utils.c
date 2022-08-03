@@ -25,16 +25,14 @@ long int	ft_get_ms(t_philo *philo)
 	return (ft_get_time() - philo->table->time);
 }
 
-void    ft_sleep(long int sleep)
+void	ft_sleep(long int time_to_stop)
 {
-    long int	time;
     long int	delay;
 	
-    time = ft_get_time();
     while (1)
     {
-        delay = ft_get_time() - time;
-        if (delay >= sleep)
+        delay = time_to_stop - ft_get_time();
+        if (delay <= 0)
             break ;
         usleep(50);
     }
