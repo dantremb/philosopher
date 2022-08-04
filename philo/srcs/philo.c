@@ -71,7 +71,28 @@ t_philo	*ft_init_table(t_table *table, int argc, char **argv)
 		table->meal_count = -1;
 	table->time = ft_get_time();
 	table->finished = 0;
+	if (table->time_to_eat == 0)
+		table->time_to_eat = 2;
+	if (table->time_to_die == 0)
+		table->time_to_die = 1;
+	if (table->time_to_sleep == 0)
+		table->time_to_sleep = 2;
 	return (ft_init_philo(table));
+}
+
+int	ft_check_minimum_value(char **argv)
+{
+	if (ft_atoi(argv[1]) == 0)
+	{
+		printf("You need at least 1 philosopher\n");
+		return (1);
+	}
+	if (argv[5] && ft_atoi(argv[5]) == 0)
+	{
+		printf("You need at least 1 meal to eat\n");
+		return (1);
+	}
+	return (0);
 }
 
 int	ft_check_argv(char **argv)
@@ -94,13 +115,13 @@ int	ft_check_argv(char **argv)
 				return (1);
 			}
 		}
-		if (ft_atoi(argv[ip]) < 1)
+		if (ft_atoi(argv[ip]) < 0)
 		{
 			printf("Arguments need to be positive\n");
 			return (1);
 		}
 	}
-	return (0);
+	return (ft_check_minimum_value(argv));
 }
 
 int	main(int argc, char **argv)
