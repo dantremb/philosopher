@@ -71,12 +71,12 @@ t_philo	*ft_init_table(t_table *table, int argc, char **argv)
 		table->meal_count = -1;
 	table->time = ft_get_time();
 	table->finished = 0;
-	if (table->time_to_eat == 0)
-		table->time_to_eat = 2;
-	if (table->time_to_die == 0)
-		table->time_to_die = 1;
-	if (table->time_to_sleep == 0)
-		table->time_to_sleep = 2;
+	if (table->time_to_eat < 3)
+		table->time_to_eat = 3;
+	if (table->time_to_die < 3)
+		table->time_to_die = 3;
+	if (table->time_to_sleep < 3)
+		table->time_to_sleep = 3;
 	return (ft_init_philo(table));
 }
 
