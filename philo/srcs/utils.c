@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:37:20 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/27 22:56:40 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/08/08 12:19:59 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,30 @@ long int	ft_get_ms(t_philo *philo)
 
 void	ft_sleep(long int time_to_stop)
 {
-    long int	delay;
-	
-    while (1)
-    {
-        delay = time_to_stop - ft_get_time();
-        if (delay <= 0)
-            break ;
-        usleep(50);
-    }
+	long int	delay;
+
+	while (1)
+	{
+		delay = time_to_stop - ft_get_time();
+		if (delay <= 0)
+			break ;
+		usleep(50);
+	}
+}
+
+int	ft_check_minimum_value(char **argv)
+{
+	if (ft_atoi(argv[1]) == 0)
+	{
+		printf("You need at least 1 philosopher\n");
+		return (1);
+	}
+	if (argv[5] && ft_atoi(argv[5]) == 0)
+	{
+		printf("You need at least 1 meal to eat\n");
+		return (1);
+	}
+	return (0);
 }
 
 int	ft_atoi(const char *str)

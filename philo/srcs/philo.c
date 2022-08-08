@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/07/21 20:39:51 by dantremb         ###   ########.fr       */
+/*   Updated: 2022/08/08 12:19:53 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,37 +62,22 @@ t_philo	*ft_init_philo(t_table *table)
 t_philo	*ft_init_table(t_table *table, int argc, char **argv)
 {
 	table->philo_count = ft_atoi(argv[1]);
-	table->time_to_die = ft_atoi(argv[2]);
-	table->time_to_eat = ft_atoi(argv[3]);
-	table->time_to_sleep = ft_atoi(argv[4]);
+	table->die = ft_atoi(argv[2]);
+	table->eat = ft_atoi(argv[3]);
+	table->sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		table->meal_count = ft_atoi(argv[5]);
 	else
 		table->meal_count = -1;
 	table->time = ft_get_time();
 	table->finished = 0;
-	if (table->time_to_eat < 3)
-		table->time_to_eat = 3;
-	if (table->time_to_die < 3)
-		table->time_to_die = 3;
-	if (table->time_to_sleep < 3)
-		table->time_to_sleep = 3;
+	if (table->eat < 3)
+		table->eat = 3;
+	if (table->die < 3)
+		table->die = 3;
+	if (table->sleep < 3)
+		table->sleep = 3;
 	return (ft_init_philo(table));
-}
-
-int	ft_check_minimum_value(char **argv)
-{
-	if (ft_atoi(argv[1]) == 0)
-	{
-		printf("You need at least 1 philosopher\n");
-		return (1);
-	}
-	if (argv[5] && ft_atoi(argv[5]) == 0)
-	{
-		printf("You need at least 1 meal to eat\n");
-		return (1);
-	}
-	return (0);
 }
 
 int	ft_check_argv(char **argv)
