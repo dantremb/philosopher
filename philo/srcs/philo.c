@@ -6,60 +6,36 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2022/08/08 12:19:53 by dantremb         ###   ########.fr       */
+/*   Updated: 2023/01/14 21:42:36 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-pthread_mutex_t	*ft_init_fork(t_table *table)
+bool	ft_init_philo(t_table *table)
 {
-	pthread_mutex_t	*fork;
 	int				i;
 
 	i = -1;
-	fork = malloc(sizeof(pthread_mutex_t) * table->philo_count);
-	if (!fork)
-		return (NULL);
 	while (++i < table->philo_count)
 	{
-		if (pthread_mutex_init(&fork[i], NULL) != 0)
-		{
-			free (fork);
-			return (NULL);
-		}
+		table->philo[i].name = i + 1;
+		table->philo[i].philo_count = table->philo_count;
+		table->philo[i].die = table->die;
+		table->philo[i].eat = table->eat;
+		table->philo[i].sleep = table->sleep;
+		table->philo[i].meal_count = table->meal_count;
+		table->philo[i].eated_meal = 0;
+		table->philo[i].last_meal = table->time;
+		table->philo[i].table = table;
+		if (pthread_mutex_init(&table->philo[i].fork_one, NULL) != 0)
+			return (true);
+		table->philo[i].fork_two = &table->philo[(i + 1) % table->philo_count].fork_one;
 	}
-	return (fork);
+	return (false);
 }
 
-t_philo	*ft_init_philo(t_table *table)
-{
-	t_philo			*philo;
-	pthread_mutex_t	*fork;
-	int				i;
-
-	fork = ft_init_fork(table);
-	if (!fork)
-		return (NULL);
-	philo = malloc(sizeof(t_philo) * table->philo_count + 1);
-	if (!philo)
-	{
-		free (fork);
-		return (NULL);
-	}
-	i = -1;
-	while (++i < table->philo_count)
-	{
-		philo[i].name = i + 1;
-		philo[i].table = table;
-		philo[i].eated_meal = 0;
-		philo[i].last_meal = 0;
-		philo[i].fork = fork;
-	}
-	return (philo);
-}
-
-t_philo	*ft_init_table(t_table *table, int argc, char **argv)
+bool	ft_init_table(t_table *table, int argc, char **argv)
 {
 	table->philo_count = ft_atoi(argv[1]);
 	table->die = ft_atoi(argv[2]);
@@ -71,16 +47,12 @@ t_philo	*ft_init_table(t_table *table, int argc, char **argv)
 		table->meal_count = -1;
 	table->time = ft_get_time();
 	table->finished = 0;
-	if (table->eat < 3)
-		table->eat = 3;
-	if (table->die < 3)
-		table->die = 3;
-	if (table->sleep < 3)
-		table->sleep = 3;
-	return (ft_init_philo(table));
+	if (pthread_mutex_init(&table->dead, NULL) != 0)
+		return (true);
+	return (false);
 }
 
-int	ft_check_argv(char **argv)
+bool	ft_check_argv(char **argv)
 {
 	int	ip;
 	int	is;
@@ -95,39 +67,31 @@ int	ft_check_argv(char **argv)
 			if (argv[ip][is] == '-')
 				is++;
 			if (argv[ip][is] < '0' || argv[ip][is] > '9')
-			{
-				printf("Arguments need to be numbers\n");
-				return (1);
-			}
+				return (true);
 		}
 		if (ft_atoi(argv[ip]) < 0)
-		{
-			printf("Arguments need to be positive\n");
-			return (1);
-		}
+			return (true);
 	}
-	return (ft_check_minimum_value(argv));
+	if (ft_atoi(argv[1]) == 0 || ft_atoi(argv[1]) > 500)
+		return (true);
+	if (argv[5] && ft_atoi(argv[5]) == 0)
+		return (true);
+	return (false);
 }
 
 int	main(int argc, char **argv)
 {
 	t_table	table;
-	t_philo	*philo;
 
 	if (argc < 5 || argc > 6)
-	{
 		printf("[philo][die][eat][sleep][meal]\n");
-		return (1);
-	}
-	if (ft_check_argv(argv) == 1)
-		return (1);
-	philo = ft_init_table(&table, argc, argv);
-	if (!philo)
-		return (1);
-	ft_sit_at_table(&table, philo);
-	if (table.chair)
-		free (table.chair);
-	free(philo->fork);
-	free(philo);
+	else if (ft_check_argv(argv) == 1)
+		printf("Bad Arguments Combination\n");
+	else if (ft_init_table(&table, argc, argv))
+		printf("Error while initializing table\n");
+	else if (ft_init_philo(&table))
+		printf("Error while initializing philosophers\n");
+	else
+		ft_sit_at_table(&table);
 	return (0);
 }

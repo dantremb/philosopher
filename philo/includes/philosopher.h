@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2022/08/08 12:20:46 by dantremb         ###   ########.fr       */
+/*   Updated: 2023/01/14 21:37:39 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,30 @@
 # include <sys/time.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
+
+# define FORK 1
+# define EAT 2
+# define SLEEP 3
+# define THINK 4
+
+typedef struct s_table	t_table;
+
+typedef struct s_philo
+{
+	int				name;
+	int				philo_count;
+	int				die;
+	int				eat;
+	int				sleep;
+	int				eated_meal;
+	int				meal_count;
+	long int		last_meal;
+	t_table			*table;
+	pthread_t		thread;
+	pthread_mutex_t	fork_one;
+	pthread_mutex_t	*fork_two;
+}				t_philo;
 
 typedef struct s_table
 {
@@ -28,23 +52,14 @@ typedef struct s_table
 	int				meal_count;
 	int				finished;
 	long int		time;
-	pthread_t		*chair;
+	t_philo			philo[500];
+	pthread_mutex_t	dead;
 }				t_table;
 
-typedef struct s_philo
-{
-	t_table			*table;
-	int				name;
-	int				eated_meal;
-	long int		last_meal;
-	pthread_mutex_t	*fork;
-}				t_philo;
-
-int				ft_sit_at_table(t_table *table, t_philo *philo);
+bool			ft_sit_at_table(t_table *table);
 long int		ft_get_time(void);
 long int		ft_get_ms(t_philo *philo);
 void			ft_sleep(long int time_to_stop);
 int				ft_atoi(const char *str);
-int				ft_check_minimum_value(char **argv);
 
 #endif
