@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2023/01/15 20:27:26 by dantremb         ###   ########.fr       */
+/*   Updated: 2023/01/15 20:34:31 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stdio.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
 
@@ -62,7 +61,6 @@ void			ft_detect_death(t_table *t);
 long int		ft_get_time(void);
 long int		ft_get_ms(t_philo *philo);
 void			ft_sleep(long int time_to_stop);
-bool			ft_print_msg(t_philo *philo, int msg);
 int				ft_atoi(const char *str);
 
 #endif

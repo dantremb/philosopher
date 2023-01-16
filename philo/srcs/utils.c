@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:37:20 by dantremb          #+#    #+#             */
-/*   Updated: 2023/01/15 20:19:39 by dantremb         ###   ########.fr       */
+/*   Updated: 2023/01/15 20:46:16 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,8 @@ void	ft_sleep(long int time_to_stop)
 		delay = time_to_stop - ft_get_time();
 		if (delay <= 0)
 			break ;
-		usleep(1000);
+		usleep(500);
 	}
-}
-
-bool	ft_print_msg(t_philo *p, int msg)
-{
-	pthread_mutex_lock(&p->t->lock);
-	if (p->t->dead == true)
-	{
-		pthread_mutex_unlock(&p->t->lock);
-		return (true);
-	}
-	if (msg == FORK)
-		printf("%lu %d has taken a fork\n", ft_get_ms(p), p->name);
-	else if (msg == EAT)
-		printf("%lu %d is eating!\n", ft_get_ms(p), p->name);
-	else if (msg == SLEEP)
-		printf("%lu %d is sleeping!\n", ft_get_ms(p), p->name);
-	else if (msg == THINK)
-		printf("%lu %d is thinking!\n", ft_get_ms(p), p->name);
-	pthread_mutex_unlock(&p->t->lock);
-	return (false);
 }
 
 int	ft_atoi(const char *str)
