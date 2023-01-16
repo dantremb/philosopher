@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:35:51 by dantremb          #+#    #+#             */
-/*   Updated: 2023/01/14 21:36:45 by dantremb         ###   ########.fr       */
+/*   Updated: 2023/01/15 19:30:06 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*ft_eating(void *arg)
 
 	philo = arg;
 	if (philo->name % 2 == 0)
-		usleep(philo->die * 100);
+		usleep(500);
 	philo->last_meal = ft_get_time();
 	while (1)
 	{
