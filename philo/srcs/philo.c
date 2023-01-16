@@ -6,48 +6,63 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:48:30 by dantremb          #+#    #+#             */
-/*   Updated: 2023/01/14 21:42:36 by dantremb         ###   ########.fr       */
+/*   Updated: 2023/01/15 20:23:28 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-bool	ft_init_philo(t_table *table)
+bool	ft_create_threads(t_table *t)
+{
+	int			i;
+
+	i = -1;
+	while (++i < t->philo_count)
+		pthread_create(&t->p[i].th, NULL, &ft_routine, &t->p[i]);
+	i = -1;
+	ft_detect_death(t);
+	while (++i < t->philo_count)
+		pthread_join(t->p[i].th, NULL);
+	return (true);
+}
+
+bool	ft_init_philo(t_table *t)
 {
 	int				i;
 
 	i = -1;
-	while (++i < table->philo_count)
+	while (++i < t->philo_count)
 	{
-		table->philo[i].name = i + 1;
-		table->philo[i].philo_count = table->philo_count;
-		table->philo[i].die = table->die;
-		table->philo[i].eat = table->eat;
-		table->philo[i].sleep = table->sleep;
-		table->philo[i].meal_count = table->meal_count;
-		table->philo[i].eated_meal = 0;
-		table->philo[i].last_meal = table->time;
-		table->philo[i].table = table;
-		if (pthread_mutex_init(&table->philo[i].fork_one, NULL) != 0)
+		t->p[i].name = i + 1;
+		t->p[i].philo_count = t->philo_count;
+		t->p[i].die = t->die;
+		t->p[i].eat = t->eat;
+		t->p[i].sleep = t->sleep;
+		t->p[i].meal_count = t->meal_count;
+		t->p[i].eated_meal = 0;
+		t->p[i].last_meal = t->time;
+		t->p[i].t = t;
+		if (pthread_mutex_init(&t->p[i].fork_one, NULL) != 0)
 			return (true);
-		table->philo[i].fork_two = &table->philo[(i + 1) % table->philo_count].fork_one;
+		t->p[i].fork_two = &t->p[(i + 1) % t->philo_count].fork_one;
 	}
 	return (false);
 }
 
-bool	ft_init_table(t_table *table, int argc, char **argv)
+bool	ft_init_table(t_table *t, int argc, char **argv)
 {
-	table->philo_count = ft_atoi(argv[1]);
-	table->die = ft_atoi(argv[2]);
-	table->eat = ft_atoi(argv[3]);
-	table->sleep = ft_atoi(argv[4]);
+	t->philo_count = ft_atoi(argv[1]);
+	t->die = ft_atoi(argv[2]);
+	t->eat = ft_atoi(argv[3]);
+	t->sleep = ft_atoi(argv[4]);
 	if (argc == 6)
-		table->meal_count = ft_atoi(argv[5]);
+		t->meal_count = ft_atoi(argv[5]);
 	else
-		table->meal_count = -1;
-	table->time = ft_get_time();
-	table->finished = 0;
-	if (pthread_mutex_init(&table->dead, NULL) != 0)
+		t->meal_count = -1;
+	t->time = ft_get_time();
+	t->finished = 0;
+	t->dead = false;
+	if (pthread_mutex_init(&t->lock, NULL) != 0)
 		return (true);
 	return (false);
 }
@@ -92,6 +107,6 @@ int	main(int argc, char **argv)
 	else if (ft_init_philo(&table))
 		printf("Error while initializing philosophers\n");
 	else
-		ft_sit_at_table(&table);
+		ft_create_threads(&table);
 	return (0);
 }

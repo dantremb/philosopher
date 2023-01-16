@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 10:46:42 by dantremb          #+#    #+#             */
-/*   Updated: 2023/01/14 21:37:39 by dantremb         ###   ########.fr       */
+/*   Updated: 2023/01/15 20:27:26 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ typedef struct s_philo
 	int				eated_meal;
 	int				meal_count;
 	long int		last_meal;
-	t_table			*table;
-	pthread_t		thread;
+	t_table			*t;
+	pthread_t		th;
 	pthread_mutex_t	fork_one;
 	pthread_mutex_t	*fork_two;
 }				t_philo;
@@ -52,14 +52,17 @@ typedef struct s_table
 	int				meal_count;
 	int				finished;
 	long int		time;
-	t_philo			philo[500];
-	pthread_mutex_t	dead;
+	bool			dead;
+	t_philo			p[500];
+	pthread_mutex_t	lock;
 }				t_table;
 
-bool			ft_sit_at_table(t_table *table);
+void			*ft_routine(void *arg);
+void			ft_detect_death(t_table *t);
 long int		ft_get_time(void);
 long int		ft_get_ms(t_philo *philo);
 void			ft_sleep(long int time_to_stop);
+bool			ft_print_msg(t_philo *philo, int msg);
 int				ft_atoi(const char *str);
 
 #endif
