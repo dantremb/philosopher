@@ -6,7 +6,7 @@
 /*   By: dantremb <dantremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:35:51 by dantremb          #+#    #+#             */
-/*   Updated: 2023/01/15 20:44:41 by dantremb         ###   ########.fr       */
+/*   Updated: 2023/01/16 11:31:57 by dantremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,12 @@ bool	ft_eating(t_philo *p)
 bool	ft_sleeping(t_philo *p)
 {
 	if (ft_print_msg(p, EAT))
-		ft_sleep(p->last_meal + p->eat);
+	{
+		pthread_mutex_unlock(&p->fork_one);
+		pthread_mutex_unlock(p->fork_two);
+		return (true);
+	}
+	ft_sleep(p->last_meal + p->eat);
 	pthread_mutex_unlock(&p->fork_one);
 	pthread_mutex_unlock(p->fork_two);
 	p->eated_meal += 1;
